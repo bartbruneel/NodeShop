@@ -2,10 +2,11 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const path = require("path");
 const expressHbs = require("express-handlebars");
-const errorController = require('./controllers/error')
+const errorController = require("./controllers/error");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const sequelize = require("./util/database");
 
 const app = express();
 
@@ -20,4 +21,11 @@ app.use(shopRoutes);
 
 app.use(errorController.get404Page);
 
-app.listen(3000);
+sequelize
+  .sync()
+  .then(() => {
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });

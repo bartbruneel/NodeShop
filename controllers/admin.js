@@ -10,20 +10,16 @@ exports.getAddProductPage = (req, res, next) => {
 
 exports.postAddProduct = (req, res) => {
   const { title, imageUrl, price, description } = req.body;
-  req.user
-    .createProduct({
-      title,
-      price,
-      imageUrl,
-      description,
-    })
+  const product = new Product(title, price, description, imageUrl);
+  product
+    .save()
     .then((output) => {
       res.redirect("/admin/products");
     })
     .catch((err) => console.log(err));
 };
 
-exports.getEditProductPage = (req, res, next) => {
+/* exports.getEditProductPage = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
@@ -86,4 +82,4 @@ exports.postDeleteProduct = (req, res, next) => {
       res.redirect("/admin/products");
     })
     .catch((err) => console.log(err));
-};
+}; */
